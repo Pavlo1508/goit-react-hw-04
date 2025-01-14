@@ -1,0 +1,10 @@
+import axios from "axios";
+
+const fetchImages = async (query, page) => {
+  const { data } = await axios.get(
+    `https://hn.algolia.com/api/v1/search?query=${query}&page=${page}`
+  );
+  return data;
+};
+
+export default fetchImages
