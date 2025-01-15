@@ -2,27 +2,25 @@ import { useState } from 'react';
 import s from './ImageCard.module.css'
 import ImageModal from '../../ImageModal/ImageModal';
 
-const ImageCard = ({ url, altText }) => {
-	const [isOpen, setIsOpen] = useState(false)
+const ImageCard = ({ url, altText, fullPhotoUrl }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-	const openModal = () => {
-		setIsOpen(true)
-	}
+  const openModal = () => {
+    setIsOpen(true);
+  };
 
-	const closeModal = (e) => {
+  const closeModal = (e) => {
     if (e.currentTarget === e.target) {
-			setIsOpen(false);
+      setIsOpen(false);
     }
   };
 
-	return (
+  return (
     <>
-      <a href={url}>{altText}</a>
-      <div
-        onClick={openModal}
-        className={s.test}
-      ></div>
-      {isOpen && <ImageModal onClick={closeModal} />}
+      <img onClick={openModal} src={url} alt={altText} width="200" />
+      {isOpen && (
+        <ImageModal onClick={closeModal} fullPhotoUrl={fullPhotoUrl} alt={altText}/>
+      )}
     </>
   );
 };

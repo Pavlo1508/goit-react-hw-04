@@ -1,51 +1,60 @@
-import { useEffect, useState } from 'react'
-import fetchImages from './services/api'
-import SearchBar from './components/SearchBar/SearchBar'
-import ImageGallery from './components/ImageGallery/ImageGallery';
-import Loader from './components/Loader/Loader';
+import { useState } from "react";
+import fetchImages from "./services/api";
+import SearchBar from "./components/SearchBar/SearchBar";
+import ImageGallery from "./components/ImageGallery/ImageGallery";
+import Loader from "./components/Loader/Loader";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 function App() {
-	const [images, setImages] = useState([]);
-	const [searchQuery, setSearchQuery] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [page, setPage] = useState(0);
+  const [images, setImages] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isError, setIsError] = useState(false);
 
-	useEffect(() => {
-    const getImagesList = async () => {
-      try {
-        setIsLoading(true);
-        const { hits } = await fetchImages(searchQuery, page);
-        setImages((prev) => [...prev, ...hits]);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getImagesList();
-  }, [searchQuery, page]);
-
-	const handleLoadMore = () => {
-		setPage(prev => prev + 1)
-	}
-
-	const handleChangeSearchQuery = (newSearchQuery) => {
-    if (newSearchQuery === searchQuery) {
-      return;
+  const getImagesList = async (query, currentPage) => {
+    try {
+      setIsLoading(true);
+      const data = await fetchImages({ searchQuery: query, page: currentPage });
+      setImages((prev) => [...prev, ...data]);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleSearchClick = () => {
+    setImages([]);
+    setPage(1);
+    getImagesList(searchQuery, 1);
+  };
+
+  const handleSearchChange = (newSearchQuery) => {
     setSearchQuery(newSearchQuery);
-		setImages([]);
-		setPage(0);
-  }; 
+  };
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    getImagesList(searchQuery, nextPage);
+  };
 
   return (
     <>
-      <SearchBar onSearchChanged={handleChangeSearchQuery} />
-      <ImageGallery imagesList={images} />
+      <SearchBar
+        onSearchChanged={handleSearchChange}
+        onSearchClick={handleSearchClick}
+      />
+      {isError ? <ErrorMessage /> : <ImageGallery imagesList={images} />}
       {isLoading && <Loader />}
-      <button onClick={handleLoadMore}>Load More</button>
+      {images.length > 0 && !isLoading && (
+        <LoadMoreBtn loadMore={handleLoadMore} />
+      )}
     </>
   );
 }
 
-export default App
+export default App;

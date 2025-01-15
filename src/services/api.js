@@ -1,10 +1,22 @@
 import axios from "axios";
 
-const fetchImages = async (query, page) => {
-  const { data } = await axios.get(
-    `https://hn.algolia.com/api/v1/search?query=${query}&page=${page}`
-  );
-  return data;
+export const fetchImages = async ({ searchQuery, page }) => {
+  const ACCESS_KEY = "2__11CiSBhHE3VaeWeDapG7I_hRaTxEI5jDLOKXZbv8";
+  try {
+    const response = await axios.get("https://api.unsplash.com/search/photos", {
+      params: {
+        query: searchQuery,
+        page: page,
+        per_page: 1,
+        client_id: ACCESS_KEY,
+      },
+    });
+
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    throw error;
+  }
 };
 
-export default fetchImages
+export default fetchImages;
