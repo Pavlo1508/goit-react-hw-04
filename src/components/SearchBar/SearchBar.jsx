@@ -1,4 +1,6 @@
 import { useState } from "react";
+import s from './SearchBar.module.css'
+import toast from "react-hot-toast";
 
 function SearchBar({ onSearchChanged, onSearchClick }) {
   const [inputValue, setInputValue] = useState("");
@@ -9,19 +11,25 @@ function SearchBar({ onSearchChanged, onSearchClick }) {
   };
 
   const handleButtonClick = () => {
-    onSearchClick();
+		if (inputValue) {
+			onSearchClick(); 
+		} else {
+			toast.error('Please enter your request:)')
+		}
+		
   };
 
   return (
-    <div>
+    <header className={s.header}>
       <input
+        className={s.input}
         type="text"
         value={inputValue}
         onChange={handleInputChange}
-        placeholder="Введите запрос..."
+        placeholder="Enter your request..."
       />
-      <button onClick={handleButtonClick}>Поиск</button>
-    </div>
+      <button className={s.btn} onClick={handleButtonClick}>Search</button>
+    </header>
   );
 }
 

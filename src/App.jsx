@@ -16,13 +16,18 @@ function App() {
   const getImagesList = async (query, currentPage) => {
     try {
       setIsLoading(true);
-      const data = await fetchImages({ searchQuery: query, page: currentPage });
+			const data = await fetchImages({ searchQuery: query, page: currentPage });
       setImages((prev) => [...prev, ...data]);
+      if (!data.length > 0) {
+        setIsError(true);
+      } else {
+        setIsError(false);
+      }
     } catch (error) {
       console.error(error);
       setIsError(true);
     } finally {
-      setIsLoading(false);
+			setIsLoading(false);
     }
   };
 
@@ -39,7 +44,7 @@ function App() {
   const handleLoadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
-    getImagesList(searchQuery, nextPage);
+		getImagesList(searchQuery, nextPage);
   };
 
   return (
@@ -50,7 +55,7 @@ function App() {
       />
       {isError ? <ErrorMessage /> : <ImageGallery imagesList={images} />}
       {isLoading && <Loader />}
-      {images.length > 0 && !isLoading && (
+      {images.length > 0 && !isLoading && ( isLoading ? <Loader /> :
         <LoadMoreBtn loadMore={handleLoadMore} />
       )}
     </>

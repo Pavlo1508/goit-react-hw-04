@@ -17,7 +17,7 @@ const ImageCard = ({ url, altText, fullPhotoUrl }) => {
 
   return (
     <>
-      <img onClick={openModal} src={url} alt={altText} width="200" />
+			<img className={s.img} onClick={openModal} src={url} alt={altText} />
       {isOpen && (
         <ImageModal onClick={closeModal} fullPhotoUrl={fullPhotoUrl} alt={altText}/>
       )}

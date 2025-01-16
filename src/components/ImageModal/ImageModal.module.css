@@ -14,7 +14,10 @@ html {
 	align-items: center;
 }
 
-.full_image {
-	font-size: 50px;
-	border: 1px solid red;
+.full_img {
+	max-width: 90%;
+  max-height: 90%;
+  box-shadow: 0 0 20px black;
+  border-radius: 10px;
+  object-fit: contain;
 }
