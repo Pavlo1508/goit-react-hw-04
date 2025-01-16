@@ -10,13 +10,19 @@ function SearchBar({ onSearchChanged, onSearchClick }) {
     onSearchChanged(event.target.value);
   };
 
-  const handleButtonClick = () => {
+  const handleSearch = () => {
 		if (inputValue) {
 			onSearchClick(); 
 		} else {
 			toast.error('Please enter your request:)')
 		}
 		
+	};
+	
+	const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
@@ -26,9 +32,12 @@ function SearchBar({ onSearchChanged, onSearchClick }) {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
+        onKeyDown={handleKeyPress}
         placeholder="Enter your request..."
       />
-      <button className={s.btn} onClick={handleButtonClick}>Search</button>
+      <button className={s.btn} onClick={handleSearch}>
+        Search
+      </button>
     </header>
   );
 }
