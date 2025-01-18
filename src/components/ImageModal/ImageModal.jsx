@@ -1,11 +1,26 @@
-import s from './ImageModal.module.css'
+import ReactModal from "react-modal";
+import s from "./ImageModal.module.css";
 
-const ImageModal = ({ onClick, fullPhotoUrl, alt }) => {
+ReactModal.setAppElement("#root");
+
+const ImageModal = ({ isOpen, modalData, onClose }) => {
+  if (!modalData) return null;
+
   return (
-    <div onClick={onClick} className={s.modal_container}>
-      <img className={s.full_img} src={fullPhotoUrl} alt={alt} />
-    </div>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className={s.modal}
+      overlayClassName={s.overlay}
+      shouldCloseOnOverlayClick={true}
+    >
+      <img
+        src={modalData.fullPhotoUrl}
+        alt={modalData.altText}
+        className={s.full_img}
+      />
+    </ReactModal>
   );
 };
 
-export default ImageModal
+export default ImageModal;

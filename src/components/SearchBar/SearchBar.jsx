@@ -10,7 +10,8 @@ function SearchBar({ onSearchChanged, onSearchClick }) {
     onSearchChanged(event.target.value);
   };
 
-  const handleSearch = () => {
+	const handleSearch = (e) => {
+		e.preventDefault()
 		if (inputValue) {
 			onSearchClick(); 
 		} else {
@@ -21,7 +22,7 @@ function SearchBar({ onSearchChanged, onSearchClick }) {
 	
 	const handleKeyPress = (event) => {
     if (event.key === "Enter") {
-      handleSearch();
+      handleSearch(event);
     }
   };
 
