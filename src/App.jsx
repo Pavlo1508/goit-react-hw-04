@@ -20,7 +20,7 @@ function App() {
     try {
       setIsLoading(true);
       const data = await fetchImages({ searchQuery: query, page: currentPage });
-      setImages((prev) => (currentPage === 1 ? data : [...prev, ...data])); // Очищення списку при новому пошуку
+      setImages((prev) => (currentPage === 1 ? data : [...prev, ...data]));
       setIsError(!data.length);
     } catch (error) {
       console.error(error);
@@ -31,10 +31,10 @@ function App() {
   };
 
   const handleSearchClick = () => {
-    setImages([]); // Скидання списку зображень
-    setPage(1); // Скидання номера сторінки
-    setIsError(false); // Скидання стану помилки
-    getImagesList(searchQuery, 1); // Виконання нового запиту
+    setImages([]);
+    setPage(1);
+    setIsError(false);
+    getImagesList(searchQuery, 1);
   };
 
   const handleSearchChange = (newSearchQuery) => {

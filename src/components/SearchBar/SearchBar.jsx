@@ -1,44 +1,39 @@
 import { useState } from "react";
-import s from './SearchBar.module.css'
+import s from "./SearchBar.module.css";
 import toast from "react-hot-toast";
 
 function SearchBar({ onSearchChanged, onSearchClick }) {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    onSearchChanged(event.target.value);
+    const value = event.target.value.trim();
+    setInputValue(value);
+    onSearchChanged(value);
   };
 
-	const handleSearch = (e) => {
-		e.preventDefault()
-		if (inputValue) {
-			onSearchClick(); 
-		} else {
-			toast.error('Please enter your request:)')
-		}
-		
-	};
-	
-	const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleSearch(event);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (inputValue) {
+      onSearchClick(inputValue);
+    } else {
+      toast.error("Please enter your request :)");
     }
   };
 
   return (
     <header className={s.header}>
-      <input
-        className={s.input}
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyPress}
-        placeholder="Enter your request..."
-      />
-      <button className={s.btn} onClick={handleSearch}>
-        Search
-      </button>
+      <form onSubmit={handleSubmit} className={s.form}>
+        <input
+          className={s.input}
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Enter your request..."
+        />
+        <button className={s.btn} type="submit">
+          Search
+        </button>
+      </form>
     </header>
   );
 }
